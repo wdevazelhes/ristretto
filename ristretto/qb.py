@@ -107,7 +107,8 @@ def compute_rqb(A, rank, oversample=20, n_subspace=2, n_blocks=1, sparse=False,
         nblock = 1
         for rows in row_sets:
             # converts A to array, raise ValueError if A has inf or nan
-            Qtemp, Ktemp = _compute_rqb(np.asarray_chkfinite(A[rows, :]), 
+            # Qtemp, Ktemp = _compute_rqb(np.asarray_chkfinite(A[rows, :]), 
+            Qtemp, Ktemp = _compute_rqb(A[rows, :], 
                 rank=rank, oversample=oversample, n_subspace=n_subspace, 
                 sparse=sparse, random_state=random_state)
 
@@ -125,7 +126,7 @@ def compute_rqb(A, rank, oversample=20, n_subspace=2, n_blocks=1, sparse=False,
         Q = np.concatenate(Q, axis=0)
 
     else:
-        Q, B = _compute_rqb(np.asarray_chkfinite(A), 
+        Q, B = _compute_rqb(A, 
             rank=rank, oversample=oversample, n_subspace=n_subspace,
             sparse=sparse, random_state=random_state)
 

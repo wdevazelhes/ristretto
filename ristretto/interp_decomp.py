@@ -74,7 +74,7 @@ def compute_interp_decomp(A, rank, mode='column', index_set=False):
                          % (' '.join(_VALID_MODES), mode))
 
     # converts A to array, raise ValueError if A has inf or nan
-    A = np.asarray_chkfinite(A)
+    # A = np.asarray_chkfinite(A)
     if mode=='row':
         A = conjugate_transpose(A)
 
@@ -184,7 +184,7 @@ def compute_rinterp_decomp(A, rank, oversample=10, n_subspace=2, mode='column',
                          % (' '.join(_VALID_MODES), mode))
 
     # converts A to array, raise ValueError if A has inf or nan
-    A = np.asarray_chkfinite(A)
+    # A = np.asarray_chkfinite(A)
     if mode == 'row':
         A = conjugate_transpose(A)
 

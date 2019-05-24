@@ -20,7 +20,7 @@ def randomized_uniform_sampling(A, l, axis=1, random_state=None):
 
     """
     random_state = check_random_state(random_state)
-    A = np.asarray(A)
+    # A = np.asarray(A)
 
     # sample l rows/columns with equal probability
     idx = _sketches.random_axis_sample(A, l, axis, random_state)
@@ -37,7 +37,7 @@ def johnson_lindenstrauss(A, l, axis=1, random_state=None):
     """
     random_state = check_random_state(random_state)
 
-    A = np.asarray(A)
+    # A = np.asarray(A)
     if A.ndim != 2:
         raise ValueError('A must be a 2D array, not %dD' % A.ndim)
 
@@ -66,7 +66,7 @@ def sparse_johnson_lindenstrauss(A, l, density=None, axis=1, random_state=None):
     """
     random_state = check_random_state(random_state)
 
-    A = np.asarray(A)
+    # A = np.asarray(A)
     if A.ndim != 2:
         raise ValueError('A must be a 2D array, not %dD' % A.ndim)
 
@@ -94,7 +94,7 @@ def fast_johnson_lindenstrauss(A, l, axis=1, random_state=None):
     """
     random_state = check_random_state(random_state)
 
-    A = np.asarray_chkfinite(A)
+    # A = np.asarray_chkfinite(A)
     if A.ndim != 2:
         raise ValueError('A must be a 2D array, not %dD' % A.ndim)
 

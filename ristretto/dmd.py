@@ -83,7 +83,7 @@ def compute_dmd(A, rank=None, dt=1, modes='exact', order=True):
     Under Review.
     """
     # converts A to array, raise ValueError if A has inf or nan
-    A = np.asarray_chkfinite(A)
+    # A = np.asarray_chkfinite(A)
     m, n = A.shape
 
     if modes not in _VALID_MODES:
@@ -241,7 +241,8 @@ class DMD(BaseEstimator):
 
     def fit(self, X, y=None):
         '''Fits DMD'''
-        self.X_ = np.asarray_chkfinite(X)
+        # self.X_ = np.asarray_chkfinite(X)
+        self.X_ = X
         self.F_, self.l_, self.omega_ = compute_dmd(
             self.X_, rank=self.rank, dt=self.dt, modes=self.modes,
             order=self.order)

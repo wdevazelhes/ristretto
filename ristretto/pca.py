@@ -13,6 +13,7 @@ from __future__ import division
 
 import numpy as np
 from scipy import linalg
+import scipy
 from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_is_fitted
 
@@ -101,15 +102,16 @@ def compute_spca(X, n_components=None, alpha=0.1, beta=1e-5, gamma=0.1,
         n_components = n
 
     # Initialization of Variable Projection Solver
-    U, D, Vt = linalg.svd(X, full_matrices=False, overwrite_a=False)
+    # U, D, Vt = linalg.svd(X, full_matrices=False, overwrite_a=False)
+    U, D, Vt = scipy.sparse.linalg.svds(X, k=n_components + 1)
     Dmax = D[0]  # l2 norm
 
-    A = Vt[:n_components].T
-    B = Vt[:n_components].T
+    A = Vt[:n_components + 1].T
+    B = Vt[:n_components + 1].T
 
     if robust:
-        U = U[:, :n_components]
-        Vt = Vt[:n_components]
+        U = U[:, :n_components + 1]
+        Vt = Vt[:n_components + 1]
         S = np.zeros_like(X)
     else:
         # compute outside the loop
@@ -138,7 +140,8 @@ def compute_spca(X, n_components=None, alpha=0.1, beta=1e-5, gamma=0.1,
         else:
             Z = VD2.dot(Vt.dot(B))
 
-        Utilde, Dtilde, Vttilde = linalg.svd(Z, full_matrices=False, overwrite_a=True)
+
+        Utilde, Dtilde, Vttilde = scipy.sparse.linalg.svds(Z, k=n_components)
         A = Utilde.dot(Vttilde)
 
         # Proximal Gradient Descent to Update B
@@ -269,7 +272,7 @@ def compute_rspca(X, n_components, alpha=0.1, beta=0.1, max_iter=1000,
     # Compute QB decomposition
     Q, Xcompressed = compute_rqb(
         X, rank=n_components, oversample=oversample, n_subspace=n_subspace,
-        n_blocks=n_blocks, random_state=random_state)
+        n_blocks=n_blocks, random_state=random_state, sparse=True)
 
     # Compute Sparse PCA
     B, A, eigen_values, obj = compute_spca(

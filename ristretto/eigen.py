@@ -224,7 +224,7 @@ def compute_reigh_nystroem_col(A, rank, oversample=0, random_state=None):
     random_state = check_random_state(random_state)
 
     # converts A to array, raise ValueError if A has inf or nan
-    A = np.asarray_chkfinite(A)
+    # A = np.asarray_chkfinite(A)
     m, n = A.shape
 
     if A.dtype not in _VALID_DTYPES:

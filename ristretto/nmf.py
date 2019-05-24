@@ -123,7 +123,7 @@ def compute_nmf(A, rank, init='nndsvd', shuffle=False,
     random_state = check_random_state(random_state)
 
     # converts A to array, raise ValueError if A has inf or nan
-    A = np.asarray_chkfinite(A)
+    # A = np.asarray_chkfinite(A)
     m, n = A.shape
 
     if np.any(A < 0):
@@ -296,7 +296,7 @@ def compute_rnmf(A, rank, oversample=20, n_subspace=2, init='nndsvd', shuffle=Fa
     random_state = check_random_state(random_state)
 
     # converts A to array, raise ValueError if A has inf or nan
-    A = np.asarray_chkfinite(A)
+    # A = np.asarray_chkfinite(A)
     m, n = A.shape
 
     flipped = False

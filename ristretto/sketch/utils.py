@@ -2,14 +2,15 @@
 Module containing utility functions for
 """
 from scipy import linalg
+import sparseqr
 
 
 def orthonormalize(A, overwrite_a=True, check_finite=False):
     """orthonormalize the columns of A via QR decomposition"""
     # NOTE: for A(m, n) 'economic' returns Q(m, k), R(k, n) where k is min(m, n)
     # TODO: when does overwrite_a even work? (fortran?)
-    Q, _ = linalg.qr(A, overwrite_a=overwrite_a, check_finite=check_finite,
-                     mode='economic', pivoting=False)
+    # Q, _ = linalg.qr(A, overwrite_a=overwrite_a, check_finite=check_finite,
+    Q, _, _, _ = sparseqr.qr(A)
     return Q
 
 
