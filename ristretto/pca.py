@@ -19,6 +19,7 @@ from sklearn.utils.validation import check_is_fitted
 
 from .qb import compute_rqb
 from .utils import soft_l0, soft_l1
+from sklearn.utils.extmath import randomized_svd
 
 
 def compute_spca(X, n_components=None, alpha=0.1, beta=1e-5, gamma=0.1,
@@ -103,15 +104,16 @@ def compute_spca(X, n_components=None, alpha=0.1, beta=1e-5, gamma=0.1,
 
     # Initialization of Variable Projection Solver
     # U, D, Vt = linalg.svd(X, full_matrices=False, overwrite_a=False)
-    U, D, Vt = scipy.sparse.linalg.svds(X, k=n_components + 1)
+    # U, D, Vt = scipy.sparse.linalg.svds(X, k=n_components + 1)
+    U, D, Vt = randomized_svd(X, n_components)
     Dmax = D[0]  # l2 norm
 
-    A = Vt[:n_components + 1].T
-    B = Vt[:n_components + 1].T
+    A = Vt[:n_components].T
+    B = Vt[:n_components].T
 
     if robust:
-        U = U[:, :n_components + 1]
-        Vt = Vt[:n_components + 1]
+        U = U[:, :n_components]
+        Vt = Vt[:n_components]
         S = np.zeros_like(X)
     else:
         # compute outside the loop
@@ -141,7 +143,8 @@ def compute_spca(X, n_components=None, alpha=0.1, beta=1e-5, gamma=0.1,
             Z = VD2.dot(Vt.dot(B))
 
 
-        Utilde, Dtilde, Vttilde = scipy.sparse.linalg.svds(Z, k=n_components)
+        Utilde, Dtilde, Vttilde = randomized_svd(Z, n_components)
+        # Utilde, Dtilde, Vttilde = scipy.sparse.linalg.svds(Z, k=n_components)
         A = Utilde.dot(Vttilde)
 
         # Proximal Gradient Descent to Update B
